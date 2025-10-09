@@ -42,16 +42,76 @@ def is_prime_power(n, require_odd=False):
 
     return False
 
+def euler_totient(n):
+    """
+    Compute Euler's Totient φ(n).
+    """
+    result = n
+    p = 2
+    while p * p <= n:
+        if n % p == 0:
+            while n % p == 0:
+                n //= p
+            result -= result // p
+        p += 1
+    if n > 1:
+        result -= result // n
+    return result
 
+def prime_factors(num):
+    """
+    Return the set of prime factors of number.
+    """
+    factors = set()
+    while num % 2 == 0:
+        factors.add(2)
+        num //= 2
+    for i in range(3, int(math.sqrt(num)) + 1, 2):
+        while num % i == 0:
+            factors.add(i)
+            num //= i
+    if num > 2:
+        factors.add(num)
+    return factors
+
+def gcd(a, b):
+    """
+    Gets the Greatest common divisor of two numbers.
+    """
+    while b:
+        a, b = b, a % b
+    return a
 
 def get_primitive_elements(n):
+    # output
+    primitives = []
     # check if n is in set {2, 4, p^k or 2p^k} where p is a prime number
     if n in {2, 4} or is_prime_power(n) or (n % 2 == 0 and is_prime_power(n // 2, require_odd=True)):
-        print()
+        # compute euler's totient formula for prime factors
+        phi_n = euler_totient(n)
+
+        factors = prime_factors(phi_n)
+        
+
+        for g in range(2, n):
+            if gcd(g, n) != 1:
+                # must be coprime
+                continue
+            is_primitive = True
+            for p in factors:
+                # If g^(φ(n)/p) ≡ 1 (mod n), g is NOT primitive
+                if pow(g, phi_n // p, n) == 1:
+                    is_primitive = False
+                    break
+
+            if is_primitive:
+                primitives.append(g)
 
 
+        if primitives:
+            print(f"Primitive elements in Z_{n}: {primitives}")
     else:
-        # if not in set it cannot have primitves
+        # if not in the set it cannot have primitves
         print("No primitives for Z_", n)
 
 def main():
