@@ -59,18 +59,21 @@ def euler_totient(n):
     return result
 
 def prime_factors(num):
-    """
-    Return the set of prime factors of number.
-    """
+    """Return the set of prime factors of num."""
     factors = set()
+    # factor out 2s
     while num % 2 == 0:
         factors.add(2)
         num //= 2
-    for i in range(3, int(math.sqrt(num)) + 1, 2):
+
+    i = 3
+    while i * i <= num:  # recomputed each time as num shrinks
         while num % i == 0:
             factors.add(i)
             num //= i
-    if num > 2:
+        i += 2
+
+    if num > 1:
         factors.add(num)
     return factors
 
@@ -119,7 +122,7 @@ def main():
     main function of program, will include multiple menu options in final version
     """
 
-    x = 23 # placeholder number for input
+    x = 31 # placeholder number for input
 
     get_primitive_elements(x) # call primitive function
 
