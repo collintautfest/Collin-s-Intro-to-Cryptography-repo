@@ -122,7 +122,7 @@ def main():
     main function of program, will include multiple menu options in final version
     """
 
-    x = 31 # placeholder number for input
+    x = 37 # placeholder number for input
 
     get_primitive_elements(x) # call primitive function
 
